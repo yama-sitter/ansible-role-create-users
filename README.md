@@ -12,7 +12,7 @@ Requirements
 
 When you place a public key that contains the user name in the **public_key** directory, you will be able to register any of the public key to the target user.
 
-Example:
+**Example:**
 
     create-users
     |- files/
