@@ -3,10 +3,10 @@
   user:
     name: "{{ item.name | mandatory }}"
     uid: "{{ item.uid | mandatory }}"
-    password: "{{ item.password | default('!')" }}
+    password: "{{ item.password | default('!') }}"
     groups: "{{ item.groups | default('') }}"
     comment: "{{ item.comment | default(item.name) }}"
-    shell: "{{ item.shell | default('/usr/bin/zsh') }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
     state: "{{ item.state | default('present') }}"
     remove: "{{ (item.state is defined and item.state == 'absent') | ternary('yes', 'no') }}"
   with_items:
@@ -18,7 +18,7 @@
     keys: "{{ item }}"
   with_fileglob:
     - public_keys/*
-  when: creating_users
+  when: creating_users | success
 
 - name: add the public key to the authorized key for each user
   authorized_key:
@@ -27,4 +27,4 @@
   with_nested:
     - create_users_users
     - keys
-  when: creating_users and item[1] | search("/" + item[0].name + "/")
+  when: creating_users | success and item[1] | search(item[0].name)
