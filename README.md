@@ -55,4 +55,4 @@ MIT
 Author Information
 ------------------
 
-[@dada\_yama](https://twitter.com/dada_yama)
+[dadayama](https://github.com/dadayama)
