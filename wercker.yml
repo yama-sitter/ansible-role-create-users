@@ -36,6 +36,7 @@ build:
     - script:
         name: Run the playbook again, checking to make sure it's idempotent
         code: >
-          ansible-playbook -i hosts -c local -vvvv test.yml |
-          grep -q 'changed=1.*failed=0' &&
-          (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 0)
+          ansible-playbook -i hosts -c local -vvvv test.yml
+          # ansible-playbook -i hosts -c local -vvvv test.yml |
+          # grep -q 'changed=1.*failed=0' &&
+          # (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
