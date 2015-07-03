@@ -1,0 +1,41 @@
+box: centos:6
+no-response-timeout: 25
+build:
+  steps:
+    - script:
+        name: Install EPEL repository
+        code: |
+          rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+    - script:
+        name: Install python
+        code: |
+          yum install -y python python-devel --enablerepo=epel
+
+    - script:
+        name: Install ansible
+        code: |
+          yum install -y ansible-$ANSIBLE_VERSION --enablerepo=epel
+          ansible --version | grep ansible
+
+    - script:
+        name: Add ansible.cfg to pick up roles path
+        code: |
+          export ANSIBLE_ROLES_PATH="../"
+
+    - script:
+        name: Check the playbook's syntax
+        code: |
+          ansible-playbook -i hosts --syntax-check test.yml
+
+    - script:
+        name: Run the playbook with ansible-playbook
+        code: |
+          ansible-playbook -i hosts -c local -vvvv test.yml
+
+    - script:
+        name: Run the playbook again, checking to make sure it's idempotent
+        code: >
+          ansible-playbook -i hosts -c local -vvvv test.yml |
+          grep -q 'changed=1.*failed=0' &&
+          (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)

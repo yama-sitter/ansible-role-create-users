@@ -1,5 +1,5 @@
 ---
-- name: create users
+- name: Create users
   user:
     name: "{{ item.name | mandatory }}"
     uid: "{{ item.uid | mandatory }}"
@@ -13,14 +13,14 @@
     - "{{ create_users_users }}"
   register: creating_users
 
-- name: get paths of public keys of each user as a variable
+- name: Get paths of public keys of each user as a variable
   set_fact:
     keys: "{{ item }}"
   with_fileglob:
     - public_keys/*
   when: creating_users | success
 
-- name: add the public key to the authorized key for each user
+- name: Add the public key to the authorized key for each user
   authorized_key:
     user: "{{ item[0].name }}"
     key: "{{ lookup('file', item[1]) }}"
