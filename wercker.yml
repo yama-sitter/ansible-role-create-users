@@ -16,7 +16,7 @@ build:
         name: Install ansible
         code: |
           yum install -y ansible-$ANSIBLE_VERSION --enablerepo=epel
-          ansible --version | grep ansible
+          ansible --version | grep ansible | sed -e 's/ansible //g'
 
     - script:
         name: Add ansible.cfg to pick up roles path
