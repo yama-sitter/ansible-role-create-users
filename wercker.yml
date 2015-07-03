@@ -1,4 +1,4 @@
-box: centos:6
+box: centos
 no-response-timeout: 25
 build:
   steps:
