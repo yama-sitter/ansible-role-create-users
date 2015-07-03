@@ -1,4 +1,4 @@
-box: centos
+box: centos:6
 no-response-timeout: 25
 build:
   steps:
@@ -16,7 +16,7 @@ build:
         name: Install ansible
         code: |
           yum install -y ansible-$ANSIBLE_VERSION --enablerepo=epel
-          ansible --version | grep ansible | sed -e 's/ansible //g'
+          ansible --version | grep ansible
 
     - script:
         name: Add ansible.cfg to pick up roles path
