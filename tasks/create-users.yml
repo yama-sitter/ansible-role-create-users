@@ -3,7 +3,7 @@
   user:
     name: "{{ item.name | mandatory }}"
     uid: "{{ item.uid | mandatory }}"
-    password: "{{ item.password | default('!') }}"
+    password: "{{ item.password | default('*') }}"
     groups: "{{ item.groups | default('') }}"
     comment: "{{ item.comment | default(item.name) }}"
     shell: "{{ item.shell | default('/bin/bash') }}"
@@ -15,7 +15,7 @@
 
 - name: Get paths of public keys of each user as a variable
   set_fact:
-    keys: "{{ item }}"
+    keys: "{{ keys | default([]) + [ item ] }}"
   with_fileglob:
     - public_keys/*
   when: creating_users | success
@@ -25,6 +25,6 @@
     user: "{{ item[0].name }}"
     key: "{{ lookup('file', item[1]) }}"
   with_nested:
-    - create_users_users
-    - keys
+    - "{{ create_users_users }}"
+    - "{{ keys }}"
   when: creating_users | success and item[1] | search(item[0].name)
