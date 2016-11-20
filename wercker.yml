@@ -8,14 +8,15 @@ build:
           rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
     - script:
-        name: Install python
+        name: Install yum modules
         code: |
-          yum install -y python python-devel --enablerepo=epel
+          yum install -y python python-devel python-pip gcc libffi-devel openssl-devel --enablerepo=epel
 
     - script:
         name: Install ansible
         code: |
-          yum install -y ansible-$ANSIBLE_VERSION --enablerepo=epel
+          pip install --upgrade pip
+          pip install --upgrade ansible
           ansible --version | grep ansible
 
     - script:
